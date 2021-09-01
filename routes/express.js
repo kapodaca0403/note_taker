@@ -1,4 +1,5 @@
 const express = require("express");
+const notesData = require("./assets/js/index.js");
 const path = require("path");
 const fs = require("fs");
 const uuid = require("./helpers/uuid");
