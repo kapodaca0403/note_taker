@@ -2,12 +2,17 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const uuid = require("./helpers/uuid");
+const { raw } = require("express");
 const app = express();
 const PORT = 3001;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
+fs.readFile("./db/db/json", "utf-08", (err, data) => {
+  err ? console.error(err) : console.log(JSON.parse(data));
+});
 
 app.get("/notes", (req, res) =>
   res.sendFile(path.join(__dirname, "/public/notes.html"))
