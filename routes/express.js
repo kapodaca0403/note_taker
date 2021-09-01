@@ -1,5 +1,4 @@
 const express = require("express");
-const notesData = require("./assets/js/index.js");
 const path = require("path");
 const fs = require("fs");
 const uuid = require("./helpers/uuid");
@@ -13,13 +12,15 @@ app.use(express.static("public"));
 app.get("/notes", (req, res) =>
   res.sendFile(path.join(__dirname, "/public/notes.html"))
 );
-app.get("/index", (req, res) =>
+app.get("*", (req, res) =>
   res.sendFile(path.join(__dirname, "/public/index.html"))
 );
-app.get("/db", (req, res) => res.sendFile(path.join(__dirname, "/db/db.json")));
+app.get("/api/notes", (req, res) =>
+  res.sendFile(path.join(__dirname, "/db/db.json"))
+);
 
 // adding a status for how many notes have been added???
-app.get("/api/notes/:notes_id", (req, res) => {
+app.put("/api/notes/:id", (req, res) => {
   res.json(notes[req.params.notes_id]);
   res.status().json(notes);
 });
@@ -45,6 +46,11 @@ app.post("/api/notes", (req, res) => {
       review_id: uuid(),
     };
 
+    const response = {
+      status: "success",
+      body: newNote,
+    };
+
     const newNote = JSON.stringify(addNote);
 
     fs.writeFile(`./db/${addNote.note}.json`, newNote, (err) =>
@@ -52,10 +58,6 @@ app.post("/api/notes", (req, res) => {
         ? console.error(err)
         : console.log(`Note ${addNote.note} has been added`)
     );
-    const response = {
-      status: "success",
-      body: newReview,
-    };
 
     let response;
 
@@ -72,7 +74,7 @@ app.post("/api/notes", (req, res) => {
   console.log(req.body);
 });
 
-app.delete("/api/notes/:notes_id", (req, res) => {
+app.delete("/api/notes/:id", (req, res) => {
   const deleteNote = notes(req.params.id, notes);
   if (deleteNote !== -1) {
     notes.splice(deletedNote, 1);
