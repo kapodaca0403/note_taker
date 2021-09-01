@@ -1,12 +1,13 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
+const uuid = require("./helpers/uuid");
 const app = express();
-const port = 3001;
+const PORT = 3001;
 
-app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
 app.get("/notes", (req, res) =>
   res.sendFile(path.join(__dirname, "/public/notes.html"))
@@ -21,30 +22,47 @@ app.get("/api/notes", (req, res) => {
   res.status().json(notes);
 });
 
+//let addedNotes= [];
+
 app.get("/api/notes", (req, res) => {
+  res.json(`${req.method} request to add notes`);
+
   console.info(`${req.method} request to add notes`);
   return res.json(notes);
 });
+
 app.post("/api/notes", (req, res) => {
   console.info(`${req.method} request to add notes`);
 
-  const { noteTitle, noteText, noteList } = req.body;
+  const { noteTitle, noteText } = req.body;
+
   if (noteTitle && noteText && noteList) {
     const addNote = {
       noteTitle,
       noteText,
-      noteList,
+      review_id: uuid(),
     };
-    const newNote = JSON.stringify(addNote);
-    fs.writeFile(`./db/${addNote.note}.json`, newNote);
-  }
 
-  let response;
-  if (req.body && req.body.product) {
-    response = {
+    const newNote = JSON.stringify(addNote);
+
+    fs.writeFile(`./db/${addNote.note}.json`, newNote, (err) =>
+      err
+        ? console.error(err)
+        : console.log(`Note ${addNote.note} has been added`)
+    );
+    const response = {
       status: "success",
-      data: req.body,
+      body: newReview,
     };
+
+    let response;
+
+    if (req.body && req.body.product) {
+      response = {
+        status: "success",
+        data: req.body,
+      };
+    }
     res.json(`Notes ${response.data.product} has been added`);
   } else {
     res.json("Please add context to notes");
@@ -52,6 +70,6 @@ app.post("/api/notes", (req, res) => {
   console.log(req.body);
 });
 
-app.delete("/api/delete", (req, res) => {});
+app.delete("/api/notes", (req, res) => {});
 
 app.listen(PORT, () => console.log(`Listening to port ${PORT}`));
