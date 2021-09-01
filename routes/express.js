@@ -2,7 +2,6 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const uuid = require("./helpers/uuid");
-const { networkInterfaces } = require("os");
 const app = express();
 const PORT = 3001;
 
