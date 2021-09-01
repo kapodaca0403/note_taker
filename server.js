@@ -25,10 +25,13 @@ app.get("/api/notes", (req, res) => {
 
 // adding a status for how many notes have been added???
 //let notes = [];
+app.get("/api/notes", (req, res) => {
+  res.json(notes);
+});
 
 let notes = [];
 app.get("/api/notes", (req, res) => {
-  fs.readFile("./db/db.json", "utf-8", (err, notes) => {
+  fs.readFile("db/db.json", "utf-8", (err, notes) => {
     err ? console.error(err) : console.log(JSON.parse(notes));
   });
   res.json(notes);
@@ -42,10 +45,10 @@ app.get("/api/notes", (req, res) => {
 app.post("/api/notes", (req, res) => {
   const addNote = req.body;
   notes.push(addNote).addNote;
-  fs.writeFile("./db/db.json", "utf-8", (err, data) => {
+  fs.writeFile("db/db.json", "utf-8", (err, addNote) => {
     err ? console.error(err) : console.log(JSON.stringify(addNote));
   });
-  res.json(`Note has been added`);
+  res.json(notes);
 });
 // let newNote;
 
