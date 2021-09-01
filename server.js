@@ -9,7 +9,7 @@ const PORT = 3001;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join("public")));
+app.use(express.static("public"));
 
 app.get("/notes", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/notes.html"));
@@ -19,19 +19,18 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
-//app.get("/api/notes", (req, res) => {
-//res.sendFile(path.join(__dirname, "/db/db.json"));
-//});
-
-fs.readFile("./db/db/json", "utf-8", (err, notes) => {
-  err ? console.error(err) : console.log(JSON.parse(notes));
+app.get("/api/notes", (req, res) => {
+  res.sendFile(path.join(__dirname, "/db/db.json"));
 });
 
 // adding a status for how many notes have been added???
-let notes = [];
+//let notes = [];
 
-//let addedNotes= [];
+let notes = [];
 app.get("/api/notes", (req, res) => {
+  fs.readFile("./db/db.json", "utf-8", (err, notes) => {
+    err ? console.error(err) : console.log(JSON.parse(notes));
+  });
   res.json(notes);
 });
 
@@ -41,12 +40,12 @@ app.get("/api/notes", (req, res) => {
 //});
 
 app.post("/api/notes", (req, res) => {
-  const addNote = {};
-  addNote.body = req.body.addNote;
+  const addNote = req.body;
   notes.push(addNote).addNote;
-  fs.writeFile(".db/db/json", "utf-8", (err, notes) => {
-    err ? console.error(err) : console.log(JSON.stringify(notes));
+  fs.writeFile("./db/db.json", "utf-8", (err, data) => {
+    err ? console.error(err) : console.log(JSON.stringify(addNote));
   });
+  res.json(`Note has been added`);
 });
 // let newNote;
 
