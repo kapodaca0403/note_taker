@@ -15,6 +15,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+// adding a status for how many notes have been added???
+let notes = [];
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "/public/notes.htnl"));
+});
+
 app.get("/notes", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
@@ -24,16 +31,13 @@ app.get("*", (req, res) => {
 });
 
 app.get("/api/notes", (req, res) => {
-  readFileAsync("./db/db.json", "utf8").then((notes) => {
+  readFileAsync("./db/db.json", "utf-8").then((notes) => {
     const parsNotes = JSON.parse(notes);
     console.log(parsNotes);
     res.json(parsNotes);
     res.end();
   });
 });
-
-// adding a status for how many notes have been added???
-let notes = [];
 
 //app.get("/api/notes/:id", (req, res) => {
 //fs.readFile("./db/db.json", (err, notes)).then(notes => {
@@ -86,7 +90,7 @@ app.get("/api/notes/:id", (req, res) => {
 app.delete("/api/notes/:id", (req, res) => {
   const deleteNote = notes(req.params.id, notes);
   if (deleteNote !== -1) {
-    notes.splice(deletedNote, 1);
+    notes.splice(deleteNote, 1);
   }
   res.json(`Note has been deleted`);
 });
