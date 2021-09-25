@@ -25,8 +25,7 @@ This is a note taker generator. This app allows you to add new notes and delete 
 undefined
 
 ## Usage
-
-Class
+To add, save and delete any notes. 
 
 ## Contribution
 
