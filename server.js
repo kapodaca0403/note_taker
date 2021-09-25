@@ -9,7 +9,6 @@ const dbJson = require("./db/db.json");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-//let addingNotes = [];
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -26,13 +25,16 @@ app.get("/notes", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "/public/index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "/public/index.html"));
+// });
 
 app.get("/api/notes", (req, res) => {
-  readFileAsync("./db/db.json", "utf-8").then((notes) => {
-    const parsNotes = JSON.parse(notes);
+  console.log("testing this out ");
+  readFileAsync("./db/db.json", "utf8").then((notes) => {
+    console.log(notes);
+    const parsNotes = [].concat(JSON.parse(notes));
+    [].concat(JSON.parse(notes));
     console.log(parsNotes);
     res.json(parsNotes);
     res.end();
