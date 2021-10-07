@@ -19,7 +19,9 @@
 ## Description
 
 This is a note taker generator. This app allows you to add new notes and delete them when needed. When adding a new note the title note and note text will populate. Once added, any oreviously added note added will generate to the left of the note-taker app.
+
 Heroku: https://katerz-notetaker.herokuapp.com/
+
 <img width="1000" alt="Capture" src="https://user-images.githubusercontent.com/87509827/136321284-c68d960b-0470-47f4-9ac1-efed07958a61.PNG">
 <img width="1000" alt="Capture2" src="https://user-images.githubusercontent.com/87509827/136321288-3390f181-6db1-4cc5-af07-4a6398aba4ff.PNG">
 
